@@ -7,17 +7,15 @@ app = Flask(__name__)
 
 def my_decorator(func):
     def wrapper_function(*args, **kwargs):
-        try:
-            print("*"*10)
-            x=open('gym_data.json','r')
-            data_obj=json.load(x)
-            data_list = data_obj['data']['profile_info']['profile_Master']['primary_key']
-            if data_list['user']== request.headers('x-api-key'):
-                func(*args,  **kwargs)
-            print("*"*10)
-            return wrapper_function
-        except Exception as e:
-            print("authontication failed:" +str(e))
+        print("Start")
+        x=open('gym_data.json','r')
+        data_obj=json.load(x)
+        data_list = data_obj['data']['profile_info']['profile_Master']['primary_key']
+        if data_list['user']== request.headers('x-api-key'):
+            func(*args,  **kwargs)
+        print("End")
+    return wrapper_function
+        
 
 
 @my_decorator
