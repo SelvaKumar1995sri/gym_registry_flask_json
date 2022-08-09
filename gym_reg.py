@@ -56,6 +56,8 @@ def update():
             old_data_obj = json.load(x)
             old_data_list = old_data_obj['old_gym_registry']
             old_data_list.append(old_coverage)
+            with open('gym_data_archive.json','w') as y:
+                json.dump(old_data_list,y)
             index_i=data_list.index(i)
             data_list[index_i]=val
     
@@ -68,10 +70,10 @@ def update():
 def delete():
     x=open("gym_data.json",'r')
     data_obj = json.load(x) 
-    data_list = data_obj['data']["coverage"]
+    data_list = data_obj['gym_registry']
     val = request.get_json()
     for i in data_list:
-        if i['id']==val['id']:
+        if i['user']==val['data']['profile_info']['profile_Master']['primary_key']['user']:
             index_i=data_list.index(i)
             del data_list[index_i]
     
