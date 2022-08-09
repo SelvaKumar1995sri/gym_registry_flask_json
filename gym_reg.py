@@ -1,61 +1,69 @@
-from shutil import ExecError
-from flask import Flask,request
+from flask import Flask,request,Response
 import json
-
+import copy
 
 app = Flask(__name__)
 
-def my_decorator(func):
+def check_valid_user(func):
     def wrapper_function(*args, **kwargs):
         print("Start")
         x=open('gym_data.json','r')
         data_obj=json.load(x)
-        data_list = data_obj['data']['profile_info']['profile_Master']['primary_key']
-        if data_list['user']== request.headers('x-api-key'):
+        data_dict = data_obj['gym_registry'][0]['data']['profile_info']['profile_Master']['primary_key']
+        if data_dict['user']== request.headers('x-api-key'):
             func(*args,  **kwargs)
         print("End")
     return wrapper_function
         
 
 
-@my_decorator
+@check_valid_user
 @app.route('/',methods=['Get'])
 def view():
     x=open('gym_data.json','r')
     data_obj=json.load(x)
-    return data_obj
+    data_list=data_obj['gym_registry']
+    
+    return Response(json.dumps(data_list),  mimetype='application/json')
 
 
-@my_decorator
+@check_valid_user
 @app.route('/add',methods=['POST'])
 def add():
+    val = request.get_json()   
     x=open("gym_data.json",'r')
     data_obj = json.load(x) 
-    data_list = data_obj['data']["coverage"]
-    val = request.get_json() 
-    print(val)   
+    data_list = data_obj['gym_registry']
     data_list.append(val)
     with open('gym_data.json','w') as y:
         json.dump(data_obj,y)
     return "Success"
 
-@my_decorator
+@check_valid_user
 @app.route('/update',methods=['put'])
 def update():
-    x=open("gym_data.json",'r')
-    data_obj = json.load(x) 
-    data_list = data_obj['data']["coverage"]
     val = request.get_json() 
-    print(val['no'])
+    x=open("gym_data.json",'r')
+    data_obj = json.load(x)
+    data_list = data_obj['gym_registry']
+    val_user = val['data']['profile_info']['profile_Master']['primary_key']['user']
     for i in data_list:
-        if i['no'] == val['no'] :
+        res=i['data']['profile_info']['profile_Master']['primary_key']['user']
+        
+        if res == val_user:
+            old_coverage=copy.deepcopy(i)
+            x=open("gym_data_archive.json",'r')
+            old_data_obj = json.load(x)
+            old_data_list = old_data_obj['old_gym_registry']
+            old_data_list.append(old_coverage)
             index_i=data_list.index(i)
             data_list[index_i]=val
+    
     with open('gym_data.json','w') as y:
         json.dump(data_obj,y)
     return "updated Success"
 
-@my_decorator
+@check_valid_user
 @app.route('/delete',methods=['put'])
 def delete():
     x=open("gym_data.json",'r')
