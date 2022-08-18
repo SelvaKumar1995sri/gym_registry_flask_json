@@ -10,27 +10,27 @@ def check_valid_user(func):
         x=open('gym_data.json','r')
         data_obj=json.load(x)
         data_dict = data_obj['gym_registry'][0]['data']['profile_info']['profile_Master']['primary_key']
-        if data_dict['user']== request.headers('x-api-key'):
-            func(*args,  **kwargs)
+        if data_dict['user']== request.headers['x-api-key']:
+            return func(*args,  **kwargs)
         print("End")
     return wrapper_function
         
 
 
-@check_valid_user
+
 @app.route('/',methods=['Get'])
+@check_valid_user
 def view():
     x=open('gym_data.json','r')
     data_obj=json.load(x)
     data_list=data_obj['gym_registry']
-    
-    return Response(json.dumps(data_list),  mimetype='application/json')
+    return {"result": data_list}
+    # return Response(json.dumps(data_list),  mimetype='application/json')
 
 
-@check_valid_user
 @app.route('/add',methods=['POST'])
 def add():
-    val = request.get_json()   
+    val = get_value(request)
     x=open("gym_data.json",'r')
     data_obj = json.load(x) 
     data_list = data_obj['gym_registry']
@@ -57,7 +57,7 @@ def update():
             old_data_list = old_data_obj['old_gym_registry']
             old_data_list.append(old_coverage)
             with open('gym_data_archive.json','w') as y:
-                json.dump(old_data_list,y)
+                json.dump(old_data_obj,y)
             index_i=data_list.index(i)
             data_list[index_i]=val
     
@@ -71,7 +71,7 @@ def delete():
     x=open("gym_data.json",'r')
     data_obj = json.load(x) 
     data_list = data_obj['gym_registry']
-    val = request.get_json()
+    val = get_value(request)
     for i in data_list:
         if i['user']==val['data']['profile_info']['profile_Master']['primary_key']['user']:
             index_i=data_list.index(i)
@@ -80,6 +80,19 @@ def delete():
     with open('gym_data.json','w') as y:
         json.dump(data_obj,y)
     return "deleted Success"
+
+def get_value(request):
+    return request.get_json()
+
+
+def tesst1():
+    return "deleted Success"
+
+def test2():
+    resp = tesst1()
+    return resp
+
+
 
 if __name__ == ('__main__'):
     app.run(debug=True)
