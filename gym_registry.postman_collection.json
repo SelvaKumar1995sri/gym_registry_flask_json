@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "dfe58f39-149b-4853-96b4-5ddf5bc4d1c5",
+		"name": "gym_registry",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://127.0.0.1:5000/students",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "x-api-key",
+						"value": "selva",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5000/",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "x-api-key",
+						"value": "selva",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"62b470a7ce8d8697632f93ew\",\r\n    \"data\": {\r\n        \"profile_info\": {\r\n            \"profile_Master\": {\r\n                \"primary_key\": {\r\n                    \"user\": \"edwin\",\r\n                    \" password\": \"Edwin@123\"\r\n                }\r\n            }\r\n        },\r\n        \"coverage\": [\r\n            {\r\n                \"no\": 1,\r\n                \"start_date\": \"09-09-2021\",\r\n                \"end_date\": \"10-10-2022\"\r\n            },\r\n            {\r\n                \"no\": 2,\r\n                \"start_date\": \"09-09-2022\",\r\n                \"end_date\": \"10-10-2023\"\r\n            },\r\n            {\r\n                \"no\": 3,\r\n                \"start_date\": \"07-08-2022\",\r\n                \"end_date\": \"07-08-2024\"\r\n            }\r\n        ]\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/add",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:5000/ Copy",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "x-api-key",
+						"value": "gym_student",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"62b470a7ce8d8697632f93ae\",\r\n    \"data\": {\r\n        \"profile_info\": {\r\n            \"profile_Master\": {\r\n                \"primary_key\": {\r\n                    \"user\": \"suriya\",\r\n                    \" password\": \"Suriya@123\"\r\n                }\r\n            }\r\n        },\r\n        \"coverage\": [\r\n          {\r\n             \"no\": 1,\r\n             \"start_date\": \"09-09-2021\",\r\n             \"end_date\": \"10-10-2022\"\r\n            }\r\n           \r\n        ]\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/update",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"update"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
